@@ -9,8 +9,24 @@ set -ouex pipefail
 # List of rpmfusion packages can be found here:
 # https://mirrors.rpmfusion.org/mirrorlist?path=free/fedora/updates/39/x86_64/repoview/index.html&protocol=https&redirect=1
 
-# this installs a package from fedora repos
-dnf5 install -y tmux 
+# Setup chezmoi
+sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply ryesearchanddevelopment
+
+# Add git
+sudo dnf install -y dnf5-plugins
+sudo dnf config-manager addrepo -y --from-repofile=https://cli.github.com/packages/rpm/gh-cli.repo
+sudo dnf install -y gh --repo gh-cli
+
+# Add vscode
+sudo rpm --import https://packages.microsoft.com/keys/microsoft.asc
+echo -e "[code]\nname=Visual Studio Code\nbaseurl=https://packages.microsoft.com/yumrepos/vscode\nenabled=1\nautorefresh=1\ntype=rpm-md\ngpgcheck=1\ngpgkey=https://packages.microsoft.com/keys/microsoft.asc" | sudo tee /etc/yum.repos.d/vscode.repo > /dev/null
+dnf check-update
+sudo dnf install -y code
+
+# Add tailscale
+sudo dnf config-manager addrepo --from-repofile=https://pkgs.tailscale.com/stable/fedora/tailscale.repo
+sudo dnf install -y tailscale
+sudo systemctl enable tailscaled
 
 # Use a COPR Example:
 #
