@@ -10,7 +10,7 @@ set -ouex pipefail
 # https://mirrors.rpmfusion.org/mirrorlist?path=free/fedora/updates/39/x86_64/repoview/index.html&protocol=https&redirect=1
 
 # Setup chezmoi
-sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply ryesearchanddevelopment
+sh -c "$(curl -fsLS get.chezmoi.io)"
 
 # Add git
 sudo dnf install -y dnf5-plugins
